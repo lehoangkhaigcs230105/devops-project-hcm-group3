@@ -8,12 +8,12 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// BUG #1: Wrong default password - doesn't match docker-compose!
+// FIX #1: Correct default password
 const pool = new Pool({
    user: process.env.DB_USER || 'postgres',
    host: process.env.DB_HOST || 'localhost',
    database: process.env.DB_NAME || 'tododb',
-   password: process.env.DB_PASSWORD || 'wrongpassword',
+   password: process.env.DB_PASSWORD || 'postgres',
    port: process.env.DB_PORT || 5432,
 });
 
