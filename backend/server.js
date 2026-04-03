@@ -51,8 +51,25 @@ app.post('/api/todos', async (req, res) => {
    }
 });
 
-// BUG #3: Missing DELETE endpoint - but test expects it!
-// STUDENT TODO: Implement DELETE /api/todos/:id endpoint
+// FIX #3: DELETE endpoint
+app.delete('/api/todos/:id', async (req, res) => {
+   try {
+      const { id } = req.params;
+
+      const result = await pool.query(
+         'DELETE FROM todos WHERE id=$1 RETURNING *',
+         [id]
+      );
+
+      if (result.rowCount === 0) {
+         return res.status(404).json({ error: 'Todo not found' });
+      }
+
+      res.json({ message: 'Deleted successfully' });
+   } catch (err) {
+      res.status(500).json({ error: err.message });
+   }
+});
 
 // BUG #4: Missing PUT endpoint for updating todos
 // STUDENT TODO: Implement PUT /api/todos/:id endpoint
