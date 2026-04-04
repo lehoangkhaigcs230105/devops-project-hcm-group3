@@ -98,8 +98,7 @@ app.put('/api/todos/:id', async (req, res) => {
 
 const port = process.env.PORT || 8080;
 
-// BUG #5: Server starts even in test mode, causing port conflicts
-// STUDENT FIX: Only start server if NOT in test mode
+// FIX #5: Do not start server in test mode
 if (process.env.NODE_ENV !== 'test') {
    app.listen(port, () => {
       console.log(`Backend running on port ${port}`);
