@@ -26,7 +26,7 @@ function App() {
     if (!newTodo.trim()) return;
 
     try {
-      await fetch(`${API_URL}/api/todos`, {
+      const response = await fetch(`${API_URL}/api/todos`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json', 
@@ -34,12 +34,16 @@ function App() {
         },
         body: JSON.stringify({ title: newTodo })
       });
+
       if (!response.ok) {
-       const errorData = await response.json();
-       throw new Error(errorData.message || 'Server error');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Server error');
       }
+
       setNewTodo('');
+      
       await fetchTodos();
+      
     } catch (err) {
       console.error('Add Todo Error:', err);
       alert('Failed to add todo');
