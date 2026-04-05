@@ -71,12 +71,6 @@ deploy-to-server:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
-            # 1. Đi tới thư mục chứa file docker-compose.yml trên server của bạn
-            # (Bạn cần sửa lại đường dẫn này cho đúng với thực tế trên server nhé)
-            cd /root/devops-project-hcm-group3
-            
-            # 2. Tải image mới nhất mà Job 2 vừa đẩy lên Docker Hub về
-            docker compose pull
-            
-            # 3. Khởi động lại các container với code mới (nhờ lệnh này mà nó không cần xóa đi build lại)
-            docker compose up -d
+            cd /home/${{ secrets.SERVER_USER }}/todo-app
+            docker-compose pull
+            docker-compose up -d
