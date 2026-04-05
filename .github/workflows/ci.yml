@@ -7,6 +7,9 @@ on:
     branches: [main]
 
 jobs:
+  # =============================
+  # 🔧 BUILD & TEST (CI)
+  # =============================
   build-and-test:
     runs-on: ubuntu-latest
 
@@ -85,11 +88,12 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
 
+    # CHỈ deploy khi push vào main
     if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Deploy to server via SSH
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -99,4 +103,4 @@ jobs:
             git pull origin main
             docker compose down
             docker compose pull
-            docker compose up -d
+            docker compose up -d --build
