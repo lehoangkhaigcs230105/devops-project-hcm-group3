@@ -68,8 +68,8 @@ jobs:
       # ===== DOCKER BUILD =====
       - name: Build Docker images
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}/todo-frontend 
-          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}/todo-backend 
+          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}/todo-frontend .
+          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}/todo-backend .
 
       # ===== LOGIN DOCKER HUB =====
       - name: Login Docker Hub
