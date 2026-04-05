@@ -69,7 +69,7 @@ jobs:
       - name: Build Docker images
         run: |
           docker build -t ${{ secrets.DOCKER_HUB_GR3 }}
-          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}.
+          docker build -t ${{ secrets.DOCKER_HUB_GR3 }}
 
       # ===== LOGIN DOCKER HUB =====
       - name: Login Docker Hub
