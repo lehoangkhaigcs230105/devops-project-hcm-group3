@@ -2,7 +2,7 @@ name: DevOps Todo CI/CD Pipeline
 
 on:
   push:
-    branches: [ "add/TunngHo" ]
+    branches: [ "add/TungHo" ]
 
 jobs:
   build-and-test:
