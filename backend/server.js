@@ -8,7 +8,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// ✅ FIX #1: đúng password (match docker-compose)
+// ===== DATABASE =====
 const pool = new Pool({
    user: process.env.DB_USER || 'postgres',
    host: process.env.DB_HOST || 'localhost',
@@ -17,27 +17,46 @@ const pool = new Pool({
    port: process.env.DB_PORT || 5432,
 });
 
-// ✅ Health check
+// ===== INIT DB (AUTO CREATE TABLE) =====
+const initDB = async () => {
+   try {
+      await pool.query(`
+         CREATE TABLE IF NOT EXISTS todos (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            completed BOOLEAN DEFAULT FALSE
+         );
+      `);
+      console.log('✅ Table todos ready');
+   } catch (err) {
+      console.error('❌ DB init error:', err.message);
+   }
+};
+
+initDB();
+
+// ===== HEALTH CHECK =====
 app.get('/health', (req, res) => {
    res.json({ status: 'healthy', version: '1.0.0' });
 });
 
-// ✅ GET todos
+// ===== GET TODOS =====
 app.get('/api/todos', async (req, res) => {
    try {
       const result = await pool.query('SELECT * FROM todos ORDER BY id');
-      res.json(result.rows);
+      res.status(200).json(result.rows);
    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: err.message });
    }
 });
 
-// ✅ POST todo (FIX validation)
+// ===== CREATE TODO =====
 app.post('/api/todos', async (req, res) => {
    try {
       const { title, completed = false } = req.body;
 
-      // FIX #2: validation
+      // VALIDATION
       if (!title || title.trim() === '') {
          return res.status(400).json({ error: 'Title is required' });
       }
@@ -49,11 +68,12 @@ app.post('/api/todos', async (req, res) => {
 
       res.status(201).json(result.rows[0]);
    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: err.message });
    }
 });
 
-// ✅ DELETE todo
+// ===== DELETE TODO =====
 app.delete('/api/todos/:id', async (req, res) => {
    try {
       const { id } = req.params;
@@ -67,13 +87,14 @@ app.delete('/api/todos/:id', async (req, res) => {
          return res.status(404).json({ error: 'Todo not found' });
       }
 
-      res.json({ message: 'Deleted successfully' });
+      res.status(200).json({ message: 'Deleted successfully' });
    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: err.message });
    }
 });
 
-// ✅ UPDATE todo
+// ===== UPDATE TODO =====
 app.put('/api/todos/:id', async (req, res) => {
    try {
       const { id } = req.params;
@@ -92,20 +113,22 @@ app.put('/api/todos/:id', async (req, res) => {
          return res.status(404).json({ error: 'Todo not found' });
       }
 
-      res.json(result.rows[0]);
+      res.status(200).json(result.rows[0]);
    } catch (err) {
+      console.error(err);
       res.status(500).json({ error: err.message });
    }
 });
 
+// ===== SERVER =====
 const port = process.env.PORT || 8080;
 
-// ✅ FIX #5: tránh chạy server khi test
+// ❗ FIX: không chạy server khi test (tránh treo CI)
 if (process.env.NODE_ENV !== 'test') {
    app.listen(port, () => {
-      console.log(`Backend running on port ${port}`);
+      console.log(`🚀 Backend running on port ${port}`);
    });
 }
 
-// ✅ FIX #6: export app cho Jest test
+// ❗ FIX: export cho test
 module.exports = app;
