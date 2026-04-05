@@ -35,6 +35,18 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
+      - name: Create Database
+        env:
+          PGPASSWORD: postgres
+        run: |
+          psql -h localhost -U postgres -d tododb -c "
+            CREATE TABLE IF NOT EXISTS todos (
+              id SERIAL PRIMARY KEY,
+              title VARCHAR(255) NOT NULL,
+              completed BOOLEAN DEFAULT false
+            );
+          "
+
       - name: Run tests
         working-directory: ./backend
         env:
