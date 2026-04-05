@@ -2,6 +2,10 @@ const request = require('supertest');
 const app = require('../server');
 
 describe('Todos API', () => {
+
+   // ⏱ tăng timeout cho CI (tránh fail do chậm DB)
+   jest.setTimeout(10000);
+
    // Test 1: Health check
    it('GET /health should return healthy status', async () => {
       const res = await request(app).get('/health');
@@ -27,58 +31,60 @@ describe('Todos API', () => {
       expect(res.body.completed).toBe(false);
    });
 
-   // BROKEN TEST #1 - Validation not implemented!
+   // Test 4: Reject empty title
    it('POST /api/todos rejects empty title', async () => {
       const res = await request(app)
          .post('/api/todos')
-         .send({});  // Missing title
+         .send({});
 
-      expect(res.status).toBe(400);  // Will FAIL - returns 201!
+      expect(res.status).toBe(400);
       expect(res.body.error).toMatch(/title/i);
    });
 
-   // BROKEN TEST #2 - Whitespace title should be rejected!
+   // Test 5: Reject whitespace title
    it('POST /api/todos rejects whitespace-only title', async () => {
       const res = await request(app)
          .post('/api/todos')
-         .send({ title: '   ' });  // Only whitespace
+         .send({ title: '   ' });
 
-      expect(res.status).toBe(400);  // Will FAIL!
+      expect(res.status).toBe(400);
       expect(res.body.error).toMatch(/title/i);
    });
 
-   // BROKEN TEST #3 - DELETE endpoint not implemented!
+   // Test 6: DELETE todo
    it('DELETE /api/todos/:id removes todo', async () => {
-      // First create a todo
       const createRes = await request(app)
          .post('/api/todos')
          .send({ title: 'To be deleted' });
 
+      expect(createRes.status).toBe(201);
+
       const todoId = createRes.body.id;
 
-      // Then delete it
       const deleteRes = await request(app)
          .delete(`/api/todos/${todoId}`);
 
-      expect(deleteRes.status).toBe(200);  // Will FAIL - 404!
+      expect(deleteRes.status).toBe(200);
+      expect(deleteRes.body.message).toMatch(/deleted/i);
    });
 
-   // BROKEN TEST #4 - PUT endpoint not implemented!
+   // Test 7: UPDATE todo
    it('PUT /api/todos/:id updates todo', async () => {
-      // First create a todo
       const createRes = await request(app)
          .post('/api/todos')
          .send({ title: 'Original title' });
 
+      expect(createRes.status).toBe(201);
+
       const todoId = createRes.body.id;
 
-      // Then update it
       const updateRes = await request(app)
          .put(`/api/todos/${todoId}`)
          .send({ title: 'Updated title', completed: true });
 
-      expect(updateRes.status).toBe(200);  // Will FAIL - 404!
+      expect(updateRes.status).toBe(200);
       expect(updateRes.body.title).toBe('Updated title');
       expect(updateRes.body.completed).toBe(true);
    });
+
 });
