@@ -78,8 +78,8 @@ jobs:
       # ===== PUSH DOCKER =====
       - name: Push images
         run: |
-          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-frontend
-          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-backend
+          docker push ${{ secrets.DOCKER_KHAI_IMAGE }}/todo-frontend
+          docker push ${{ secrets.DOCKER_KHAI_IMAGE }}/todo-backend
 
   # =============================
   # 🚀 DEPLOY (CD)
