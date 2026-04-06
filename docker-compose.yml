@@ -48,7 +48,6 @@ services:
       backend:
         condition: service_healthy
     restart: always
-      - backend
 
   # ===== BACKEND =====
   backend:
@@ -70,10 +69,6 @@ services:
       timeout: 5s
       retries: 5
     restart: always
-      test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # ===== POSTGRES =====
   postgres:
@@ -93,12 +88,6 @@ services:
       timeout: 5s
       retries: 5
     restart: always
-      - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 # ===== VOLUME =====
 volumes:
