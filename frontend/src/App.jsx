@@ -57,6 +57,29 @@ function App() {
       })
     });
     fetchTodos();
+    try {
+      const response = await fetch(`${API_URL}/api/todos`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json' 
+        },
+        body: JSON.stringify({ title: newTodo })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Server error');
+      }
+
+      setNewTodo('');
+      
+      await fetchTodos();
+      
+    } catch (err) {
+      console.error('Add Todo Error:', err);
+      alert('Failed to add todo');
+    }
   };
 
   return (
