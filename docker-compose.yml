@@ -36,19 +36,20 @@
 #      timeout: 5s
 #      retries: 5
 # ===========================================
-
 version: '3.8'
 
 services:
-  # STUDENT TODO: Define frontend service
+  # ===== FRONTEND =====
   frontend:
     build: ./frontend
     ports:
       - "3000:3000"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    restart: always
 
-  # STUDENT TODO: Define backend service
+  # ===== BACKEND =====
   backend:
     build: ./backend
     ports:
@@ -63,12 +64,13 @@ services:
       postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:8080/health"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
 
-  # STUDENT TODO: Define postgres service
+  # ===== POSTGRES =====
   postgres:
     image: postgres:15-alpine
     environment:
@@ -79,13 +81,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: always
 
-# STUDENT TODO: Define named volumes
+# ===== VOLUME =====
 volumes:
   postgres_data:
