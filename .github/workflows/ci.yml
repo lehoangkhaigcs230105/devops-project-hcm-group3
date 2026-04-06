@@ -78,8 +78,8 @@ jobs:
       # ===== PUSH DOCKER =====
       - name: Push images
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/hcm-group3-frontend:latest ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/hcm-group3-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/hcm-group3-frontend:latest ./frontend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/hcm-group3-backend:latest ./backend
 
   # =============================
   # 🚀 DEPLOY (CD)
