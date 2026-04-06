@@ -88,9 +88,6 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
 
-    # CHỈ deploy khi push vào main
-    if: github.ref == 'refs/heads/main'
-
     steps:
       - name: Deploy to server via SSH
         uses: appleboy/ssh-action@v0.1.10
