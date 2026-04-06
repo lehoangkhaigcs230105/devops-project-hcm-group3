@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://192.168.1.8:8080';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
 function App() {
   const [todos, setTodos] = useState([]);
