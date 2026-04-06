@@ -94,7 +94,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.SERVER_PASSWORD }}
+          key: ${{ secrets.SERVER_PASSWORD }}
           script: |
             cd ~/devops-project-hcm-group3
             git pull origin main
