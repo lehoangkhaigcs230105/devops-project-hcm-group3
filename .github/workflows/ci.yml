@@ -68,8 +68,8 @@ jobs:
       # ===== DOCKER BUILD =====
       - name: Build Docker images
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_BUILD }}/todo-frontend ./frontend
-          docker build -t ${{ secrets.DOCKER_HUB_BUILD }}/todo-backend ./backend
+          docker build -t ${{ secrets.DOCKER_KHAI_USER }}/todo-frontend ./frontend
+          docker build -t ${{ secrets.DOCKER_KHAI_USER }}/todo-backend ./backend
 
       # ===== LOGIN DOCKER HUB =====
       - name: Login Docker Hub
@@ -78,8 +78,8 @@ jobs:
       # ===== PUSH DOCKER =====
       - name: Push images
         run: |
-          docker push ${{ secrets.DOCKER_KHAI_USER }}/hcm-group3-frontend:latest ./frontend
-          docker push ${{ secrets.DOCKER_KHAI_USER }}/hcm-group3-backend:latest ./backend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-frontend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-backend
 
   # =============================
   # 🚀 DEPLOY (CD)
