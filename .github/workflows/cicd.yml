@@ -87,6 +87,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
-            cd /home/${{ secrets.SERVER_USER }}/todo-app
+            cd /root/todo-app
             docker-compose pull
             docker-compose up -d
