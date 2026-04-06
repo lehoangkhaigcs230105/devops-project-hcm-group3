@@ -78,8 +78,8 @@ jobs:
       # ===== PUSH DOCKER =====
       - name: Push images
         run: |
-          docker push ${{ secrets.DOCKER_HUB_BUILD }}/todo-frontend
-          docker push ${{ secrets.DOCKER_HUB_BUILD }}/todo-backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/todo-frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/todo-backend
 
   # =============================
   # 🚀 DEPLOY (CD)
