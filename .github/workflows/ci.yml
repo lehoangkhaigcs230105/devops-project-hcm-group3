@@ -73,13 +73,13 @@ jobs:
 
       # ===== LOGIN DOCKER HUB =====
       - name: Login Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKER_KHAI_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_KHAI_USER }}" --password-stdin
 
       # ===== PUSH DOCKER =====
       - name: Push images
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/todo-frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/todo-backend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-frontend
+          docker push ${{ secrets.DOCKER_KHAI_USER }}/todo-backend
 
   # =============================
   # 🚀 DEPLOY (CD)
