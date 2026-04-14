@@ -22,6 +22,7 @@
 # - Research: "Docker multi-stage React production"
 # ===========================================
 
+# YOUR CODE HERE:TEST nsajdnasjdnajsdnasjdnajsndasndjasdadadadadadadadad
 # YOUR CODE HERE:
 # ===== Stage 1: Builder =====
 FROM node:18-alpine AS builder
